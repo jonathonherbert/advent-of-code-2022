@@ -2,6 +2,36 @@ package advent
 
 import scala.io.Source
 
+val RESET = "\u001B[0m"
+val RED = "\u001B[31m"
+val GREEN = "\u001B[32m"
+val PREV_LINE = "\u001B[1A"
+val CLEAR_LINE = "\u001B[2K"
+val CLEAR_SCREEN = "\u001b[2J"
+
+def readFile(path: String) = Source.fromFile(path).getLines.toList
+
+case class Pixel(str: String | Char, mod: String = "")
+
+def p(p: Pixel) = print(s"${p.mod}${p.str}${RESET}")
+
+def printGrid[T](grid: List[List[T]], toPixel: T => Pixel = (t: T) => Pixel(t.toString)) =
+  grid.foreach { line =>
+    line.foreach { item =>
+      p(toPixel(item))
+    }
+    println
+  }
+
+  Thread.sleep(100)
+
+def printGrids[T](grids: List[List[List[T]]], toPixel: T => Pixel = (t: T) => Pixel(t.toString), delay: Int = 1000) =
+  grids.foreach { grid =>
+    printGrid(grid, toPixel)
+    Thread.sleep(delay)
+    (0 to grid.length - 1).foreach { (i: Int) => print(PREV_LINE)}
+  }
+
 @main def runDay3: Unit =
   day3.run()
 
@@ -20,4 +50,11 @@ import scala.io.Source
 @main def runDay8: Unit =
   day8.run()
 
-def readFile(path: String) = Source.fromFile(path).getLines.toList
+@main def runDay9: Unit =
+  day9.run()
+
+@main def runDay10: Unit =
+  day10.run()
+
+@main def runDay11: Unit =
+  day11.run()

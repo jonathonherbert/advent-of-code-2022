@@ -2,10 +2,6 @@ package advent
 
 case class Tree(height: Int, visible: Boolean = false)
 
-val ANSI_RESET = "\u001B[0m";
-val ANSI_RED = "\u001B[31m";
-val ANSI_GREEN = "\u001B[32m";
-
 object day8:
   def run() =
     val input = readFile("resources/day8.txt")
@@ -90,8 +86,8 @@ object day8:
     matrix.foreach { row =>
       row.foreach { tree =>
         print(
-          (if (tree.visible) ANSI_GREEN
-           else ANSI_RED) + tree.height + ANSI_RESET
+          (if (tree.visible) GREEN
+           else RED) + tree.height + RESET
         )
       }
       print("\n")
