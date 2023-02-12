@@ -138,4 +138,3 @@ object day11:
     case '+' => item.worryLevel + op.operand.getOrElse(item.worryLevel)
     case '-' => item.worryLevel - op.operand.getOrElse(item.worryLevel)
   }
-

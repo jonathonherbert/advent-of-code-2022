@@ -11,21 +11,25 @@ val CLEAR_SCREEN = "\u001b[2J"
 
 def readFile(path: String) = Source.fromFile(path).getLines.toList
 
+def readFileForDay(day: Int) = readFile(s"resources/day${day}.txt")
+
 case class Pixel(str: String | Char, mod: String = "")
 
 def p(p: Pixel) = print(s"${p.mod}${p.str}${RESET}")
 
-def printGrid[T](grid: List[List[T]], toPixel: T => Pixel = (t: T) => Pixel(t.toString)) =
-  grid.foreach { line =>
-    line.foreach { item =>
-      p(toPixel(item))
+type ToPixel[T] = (T, Int, Int) => Pixel
+
+def printGrid[T](grid: List[List[T]], toPixel: ToPixel[T] = (t: T, _: Int, _: Int) => Pixel(t.toString)) =
+  grid.zipWithIndex.foreach { line =>
+    line._1.zipWithIndex.foreach { item =>
+      p(toPixel(item._1, item._2, line._2))
     }
     println
   }
 
   Thread.sleep(100)
 
-def printGrids[T](grids: List[List[List[T]]], toPixel: T => Pixel = (t: T) => Pixel(t.toString), delay: Int = 1000) =
+def printGrids[T](grids: List[List[List[T]]], toPixel: ToPixel[T] = (t: T, _: Int, _: Int) => Pixel(t.toString), delay: Int = 1000) =
   grids.foreach { grid =>
     printGrid(grid, toPixel)
     Thread.sleep(delay)
@@ -58,3 +62,9 @@ def printGrids[T](grids: List[List[List[T]]], toPixel: T => Pixel = (t: T) => Pi
 
 @main def runDay11: Unit =
   day11.run()
+
+@main def runDay12: Unit =
+  day12.run(readFileForDay(12))
+
+@main def runDay13: Unit =
+  day13.run(readFileForDay(13))
